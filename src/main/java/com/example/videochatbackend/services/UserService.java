@@ -2,6 +2,8 @@ package com.example.videochatbackend.services;
 
 import com.example.videochatbackend.domain.dtos.user.UserDto;
 import com.example.videochatbackend.domain.entities.User;
+import com.example.videochatbackend.domain.exceptions.NotFoundExceptions;
+import com.example.videochatbackend.domain.mappers.UserMapper;
 import com.example.videochatbackend.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,7 +29,6 @@ public class UserService implements UserDetailsService {
 
     public UserDto findUserByUsername(String username){
         Optional<User> user = userRepository.findByUsername(username);
-        //TODO MAPPER
-        return null;
+        return user.map(UserMapper.INSTANCE::userToUserDto).orElseThrow(() -> new NotFoundExceptions("User not found."));
     }
 }
