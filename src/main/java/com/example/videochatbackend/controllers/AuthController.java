@@ -30,12 +30,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto loginRequest){
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         } catch (Exception e){
             e.printStackTrace();
             throw new UnauthorizedException("Invalid login parameters.");
         }
 
-        return ResponseEntity.ok(new LoginResponseDto(jwtUtil.generateToken(userService.findUserByUsername(loginRequest.getEmail()))));
+        return ResponseEntity.ok(new LoginResponseDto(jwtUtil.generateToken(userService.findUserByUsername(loginRequest.getUsername()))));
     }
 }

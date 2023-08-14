@@ -2,6 +2,7 @@ package com.example.videochatbackend.controllers;
 
 import com.example.videochatbackend.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,5 +21,11 @@ public class UserController {
                                                         @RequestParam(defaultValue = "0") Integer page,
                                                         @RequestParam(defaultValue = "10") Integer size){
         return ResponseEntity.ok(userService.findUsersContainingUsername(username, page, size));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getMyUserInfo(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(userService.findUserByUsername(username));
     }
 }

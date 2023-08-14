@@ -10,8 +10,7 @@ import javax.validation.constraints.NotNull;
 public class LoginRequestDto {
 
     @NotNull @NotBlank @NotEmpty
-    @Email
-    private String email;
+    private String username;
     @NotNull @NotBlank @NotEmpty
     @Length(min = 4, max = 20)
     private String password;
@@ -19,17 +18,17 @@ public class LoginRequestDto {
     public LoginRequestDto() {
     }
 
-    public LoginRequestDto(String email, String password) {
-        this.email = email;
+    public LoginRequestDto(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
