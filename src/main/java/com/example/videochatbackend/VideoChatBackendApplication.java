@@ -9,13 +9,6 @@ import java.sql.*;
 @SpringBootApplication
 public class VideoChatBackendApplication {
 
-    @Value("${spring.datasource.username}")
-    private static String dbUsername;
-    @Value("${spring.datasource.password}")
-    private static String dbPassword;
-    @Value("${spring.datasource.name}")
-    private static String dbName;
-
     public static void main(String[] args) {
         SpringApplication.run(VideoChatBackendApplication.class, args);
     }
