@@ -1,5 +1,8 @@
 package com.example.videochatbackend.bootstrap;
 
+import com.example.videochatbackend.domain.builders.UserBuilder;
+import com.example.videochatbackend.domain.entities.User;
+import com.example.videochatbackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -13,6 +16,12 @@ public class BootstrapData implements CommandLineRunner {
     private String dbUsername;
     @Value("${spring.datasource.password}")
     private String dbPassword;
+
+    private final UserRepository userRepository;
+
+    public BootstrapData(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public void run(String... args) throws Exception {
@@ -56,6 +65,31 @@ public class BootstrapData implements CommandLineRunner {
     }
 
     private void createUsers(){
-        //TODO
+        User user1 = new UserBuilder()
+                .username("user1")
+                .email("user1@example.com")
+                .password("user1")
+                .firstName("User")
+                .lastName("First")
+                .build();
+        userRepository.save(user1);
+
+        User user2 = new UserBuilder()
+                .username("user2")
+                .email("user2@example.com")
+                .password("user2")
+                .firstName("User")
+                .lastName("Second")
+                .build();
+        userRepository.save(user2);
+
+        User vuk = new UserBuilder()
+                .username("vuk")
+                .email("vuk@example.com")
+                .password("vuk123")
+                .firstName("Vuk")
+                .lastName("Vukovic")
+                .build();
+        userRepository.save(vuk);
     }
 }
