@@ -1,6 +1,8 @@
 package com.example.videochatbackend.domain.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users", indexes = { @Index(columnList = "username")})
@@ -22,6 +24,13 @@ public class User {
     private String firstName;
     @Column(nullable = false)
     private String lastName;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<User> contacts;
+
+    public User() {
+        this.contacts = new ArrayList<>();
+    }
 
     public Long getUserId() {
         return userId;
@@ -69,5 +78,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<User> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<User> contacts) {
+        this.contacts = contacts;
     }
 }

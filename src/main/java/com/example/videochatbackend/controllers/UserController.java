@@ -19,13 +19,19 @@ public class UserController {
     @GetMapping
     public ResponseEntity<?> getUsersContainingUsername(@RequestParam String username,
                                                         @RequestParam(defaultValue = "0") Integer page,
-                                                        @RequestParam(defaultValue = "10") Integer size){
+                                                        @RequestParam(defaultValue = "10") Integer size) {
         return ResponseEntity.ok(userService.findUsersContainingUsername(username, page, size));
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getMyUserInfo(){
+    public ResponseEntity<?> getMyUserInfo() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(userService.findUserByUsername(username));
+    }
+
+    @GetMapping("/contacts")
+    public ResponseEntity<?> getContacts() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(userService.findUserContacts(username));
     }
 }

@@ -95,6 +95,21 @@ public class BootstrapData implements CommandLineRunner {
                 .build();
         userRepository.save(vuk);
 
+        User vaske = new UserBuilder()
+                .username("vaske")
+                .email("vaske@example.com")
+                .password("vaske123")
+                .firstName("Vasilije")
+                .lastName("Risticevic")
+                .build();
+        userRepository.save(vaske);
+
+        vuk.getContacts().add(vaske);
+        userRepository.save(vuk);
+
+        vaske.getContacts().add(vuk);
+        userRepository.save(vaske);
+
         System.out.println("Users created.");
     }
 }

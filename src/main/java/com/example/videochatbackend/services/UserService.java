@@ -33,12 +33,22 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
     }
 
-    public UserDto findUserByUsername(String username){
+    public UserDto findUserByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         return user.map(UserMapper.INSTANCE::userToUserDto).orElseThrow(() -> new NotFoundExceptions("User not found."));
     }
 
-    public Page<UserDto> findUsersContainingUsername(String username, Integer page, Integer size){
+    public List<UserDto> findUserContacts(String username) {
+        Optional<User> user = userRepository.findUserContacts(username);
+        if(user.isPresent()){
+            return user.get().getContacts().stream().map(UserMapper.INSTANCE::userToUserDto).collect(Collectors.toList());
+        }
+        else {
+            throw new NotFoundExceptions("User not found.");
+        }
+    }
+
+    public Page<UserDto> findUsersContainingUsername(String username, Integer page, Integer size) {
         Page<User> users = userRepository.findByUsernameContainingIgnoreCase(username, PageRequest.of(page, size));
 
         return new PageImpl<>(
