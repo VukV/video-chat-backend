@@ -2,7 +2,7 @@ package com.example.videochatbackend.services;
 
 import com.example.videochatbackend.domain.dtos.user.UserDto;
 import com.example.videochatbackend.domain.entities.User;
-import com.example.videochatbackend.domain.exceptions.NotFoundExceptions;
+import com.example.videochatbackend.domain.exceptions.NotFoundException;
 import com.example.videochatbackend.domain.mappers.UserMapper;
 import com.example.videochatbackend.repositories.UserRepository;
 import org.springframework.data.domain.Page;
@@ -29,13 +29,13 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundExceptions("User not found."));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("User not found."));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
     }
 
     public UserDto findUserByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.map(UserMapper.INSTANCE::userToUserDto).orElseThrow(() -> new NotFoundExceptions("User not found."));
+        return user.map(UserMapper.INSTANCE::userToUserDto).orElseThrow(() -> new NotFoundException("User not found."));
     }
 
     public List<UserDto> findUserContacts(String username) {
@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService {
             return user.get().getContacts().stream().map(UserMapper.INSTANCE::userToUserDto).collect(Collectors.toList());
         }
         else {
-            throw new NotFoundExceptions("User not found.");
+            throw new NotFoundException("User not found.");
         }
     }
 

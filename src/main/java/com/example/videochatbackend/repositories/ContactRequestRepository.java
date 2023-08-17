@@ -10,7 +10,11 @@ public interface ContactRequestRepository extends JpaRepository<ContactRequest, 
 
     Optional<ContactRequest> findByRequestId(Long requestId);
 
+    Optional<ContactRequest> findContactRequestByRequestSender_UsernameAndRequestReceiver_Username(String sender, String receiver);
+
     List<ContactRequest> findAllByRequestReceiver_UserId(Long receiverId);
+
+    List<ContactRequest> findAllByRequestReceiver_Username(String receiverUsername);
 
     void deleteByRequestId(Long requestId);
 }

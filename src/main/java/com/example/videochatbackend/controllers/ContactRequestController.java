@@ -1,10 +1,11 @@
 package com.example.videochatbackend.controllers;
 
+import com.example.videochatbackend.domain.dtos.contactrequest.ContactRequestHandleDto;
 import com.example.videochatbackend.services.ContactRequestService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -17,13 +18,21 @@ public class ContactRequestController {
         this.contactRequestService = contactRequestService;
     }
 
-    public ResponseEntity<?> sendRequest() {
-        //TODO
-        return null;
+    @GetMapping
+    public ResponseEntity<?> getRequests() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(contactRequestService.findContactRequestsForUser(username));
     }
 
-    public ResponseEntity<?> handleRequest() {
-        //TODO
-        return null;
+    @PostMapping("/{receiverUsername}")
+    public ResponseEntity<?> sendRequest(@PathVariable String receiverUsername) {
+        contactRequestService.createContactRequest(receiverUsername);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
+    @PostMapping("/handle")
+    public ResponseEntity<?> handleRequest(@RequestBody ContactRequestHandleDto contactRequestHandleDto) {
+        contactRequestService.handleContactRequest(contactRequestHandleDto);
+        return ResponseEntity.ok().build();
     }
 }
