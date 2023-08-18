@@ -21,6 +21,10 @@ public class ContactRequest {
     @Temporal(TemporalType.DATE)
     private Date requestDate;
 
+    public ContactRequest() {
+        requestDate = new Date();
+    }
+
     public Long getRequestId() {
         return requestId;
     }

@@ -8,6 +8,7 @@ import com.example.videochatbackend.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,12 +50,24 @@ public class UserService implements UserDetailsService {
     }
 
     public Page<UserDto> findUsersContainingUsername(String username, Integer page, Integer size) {
-        Page<User> users = userRepository.findByUsernameContainingIgnoreCase(username, PageRequest.of(page, size));
+        List<String> contacts = filterContacts();
+        Page<User> users = userRepository.findByUsernameContainingIgnoreCaseAndUsernameNotIn(username, contacts, PageRequest.of(page, size));
 
         return new PageImpl<>(
                 users.stream().map(UserMapper.INSTANCE::userToUserDto).collect(Collectors.toList()),
                 PageRequest.of(page, size),
                 users.getTotalElements()
         );
+    }
+
+    private List<String> filterContacts() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("User not found."));
+
+        List<String> contacts = new ArrayList<>();
+        contacts.add(username);
+        contacts.addAll(user.getContacts().stream().map(User::getUsername).toList());
+
+        return contacts;
     }
 }
