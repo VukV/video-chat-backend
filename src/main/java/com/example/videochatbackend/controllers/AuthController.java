@@ -1,10 +1,12 @@
 package com.example.videochatbackend.controllers;
 
+import com.example.videochatbackend.domain.dtos.login.BadCredentialsDto;
 import com.example.videochatbackend.domain.dtos.login.LoginRequestDto;
 import com.example.videochatbackend.domain.dtos.login.LoginResponseDto;
 import com.example.videochatbackend.domain.exceptions.UnauthorizedException;
 import com.example.videochatbackend.security.jwt.JwtUtil;
 import com.example.videochatbackend.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,9 +33,9 @@ public class AuthController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto loginRequest){
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-        } catch (Exception e){
-            e.printStackTrace();
-            throw new UnauthorizedException("Invalid login parameters.");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new BadCredentialsDto());
         }
 
         return ResponseEntity.ok(new LoginResponseDto(jwtUtil.generateToken(userService.findUserByUsername(loginRequest.getUsername()))));
