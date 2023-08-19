@@ -1,4 +1,4 @@
-package com.example.videochatbackend.controllers;
+package com.example.videochatbackend.web.controllers;
 
 import com.example.videochatbackend.domain.dtos.login.BadCredentialsDto;
 import com.example.videochatbackend.domain.dtos.login.LoginRequestDto;

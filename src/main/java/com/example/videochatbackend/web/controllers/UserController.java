@@ -1,4 +1,4 @@
-package com.example.videochatbackend.controllers;
+package com.example.videochatbackend.web.controllers;
 
 import com.example.videochatbackend.services.UserService;
 import org.springframework.http.ResponseEntity;

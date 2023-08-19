@@ -1,4 +1,4 @@
-package com.example.videochatbackend.controllers;
+package com.example.videochatbackend.web.controllers;
 
 import com.example.videochatbackend.domain.dtos.contactrequest.ContactRequestHandleDto;
 import com.example.videochatbackend.services.ContactRequestService;
