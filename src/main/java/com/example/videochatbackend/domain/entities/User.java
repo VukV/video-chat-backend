@@ -32,6 +32,10 @@ public class User {
         this.contacts = new ArrayList<>();
     }
 
+    public boolean isInContacts(Long contactId) {
+        return contacts.stream().anyMatch(c -> c.getUserId().equals(contactId));
+    }
+
     public Long getUserId() {
         return userId;
     }

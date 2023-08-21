@@ -98,7 +98,7 @@ public class BootstrapData implements CommandLineRunner {
         User vaske = new UserBuilder()
                 .username("vaske")
                 .email("vaske@example.com")
-                .password("vaske123")
+                .password(passwordEncoder.encode("vaske123"))
                 .firstName("Vasilije")
                 .lastName("Risticevic")
                 .build();

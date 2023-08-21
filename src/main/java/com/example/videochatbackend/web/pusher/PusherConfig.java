@@ -22,6 +22,8 @@ public class PusherConfig {
 
     @Bean
     public Pusher pusher() {
-        return new Pusher(appId, key, secret);
+        Pusher pusher = new Pusher(appId, key, secret);
+        pusher.setCluster(cluster);
+        return pusher;
     }
 }
