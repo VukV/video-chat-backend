@@ -25,7 +25,7 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<User> contacts;
 
     public User() {

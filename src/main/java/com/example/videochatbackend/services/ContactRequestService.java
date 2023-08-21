@@ -5,6 +5,7 @@ import com.example.videochatbackend.domain.dtos.contactrequest.ContactRequestHan
 import com.example.videochatbackend.domain.entities.ContactRequest;
 import com.example.videochatbackend.domain.entities.User;
 import com.example.videochatbackend.domain.exceptions.NotFoundException;
+import com.example.videochatbackend.domain.exceptions.UnauthorizedException;
 import com.example.videochatbackend.domain.mappers.ContactRequestMapper;
 import com.example.videochatbackend.repositories.ContactRequestRepository;
 import com.example.videochatbackend.repositories.UserRepository;
@@ -51,9 +52,13 @@ public class ContactRequestService {
 
     @Transactional
     public void handleContactRequest(ContactRequestHandleDto contactRequestHandleDto) {
-        if(contactRequestHandleDto.isAccepted()){
-            ContactRequest contactRequest = contactRequestRepository.findByRequestId(contactRequestHandleDto.getRequestId()).orElseThrow(() -> new NotFoundException("Contact request not found."));
+        ContactRequest contactRequest = contactRequestRepository.findByRequestId(contactRequestHandleDto.getRequestId()).orElseThrow(() -> new NotFoundException("Contact request not found."));
 
+        if(!contactRequest.getRequestReceiver().getUsername().equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+            throw new UnauthorizedException("You don't have authority to access provided contact request.");
+        }
+
+        if(contactRequestHandleDto.isAccepted()){
             User sender = contactRequest.getRequestSender();
             User receiver = contactRequest.getRequestReceiver();
 
