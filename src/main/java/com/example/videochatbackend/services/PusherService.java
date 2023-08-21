@@ -1,5 +1,6 @@
 package com.example.videochatbackend.services;
 
+import com.example.videochatbackend.domain.dtos.user.UserDto;
 import com.example.videochatbackend.domain.entities.User;
 import com.example.videochatbackend.domain.exceptions.NotFoundException;
 import com.example.videochatbackend.domain.exceptions.UnauthorizedException;
@@ -36,8 +37,8 @@ public class PusherService {
         }
     }
 
-    public void testPusher(){
-        pusher.trigger("my-channel", "my-event", "PROBA");
+    public void notifyAcceptedRequest(Long channelId, UserDto userDto) {
+        pusher.trigger("presence-" + channelId, "accepted_request", userDto);
     }
 
 }

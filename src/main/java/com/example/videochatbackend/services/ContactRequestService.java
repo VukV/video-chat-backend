@@ -2,18 +2,22 @@ package com.example.videochatbackend.services;
 
 import com.example.videochatbackend.domain.dtos.contactrequest.ContactRequestDto;
 import com.example.videochatbackend.domain.dtos.contactrequest.ContactRequestHandleDto;
+import com.example.videochatbackend.domain.dtos.user.UserDto;
 import com.example.videochatbackend.domain.entities.ContactRequest;
 import com.example.videochatbackend.domain.entities.User;
 import com.example.videochatbackend.domain.exceptions.NotFoundException;
 import com.example.videochatbackend.domain.exceptions.UnauthorizedException;
 import com.example.videochatbackend.domain.mappers.ContactRequestMapper;
+import com.example.videochatbackend.domain.mappers.UserMapper;
 import com.example.videochatbackend.repositories.ContactRequestRepository;
 import com.example.videochatbackend.repositories.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -51,17 +55,17 @@ public class ContactRequestService {
     }
 
     @Transactional
-    public void handleContactRequest(ContactRequestHandleDto contactRequestHandleDto) {
+    public HashMap<String, UserDto> handleContactRequest(ContactRequestHandleDto contactRequestHandleDto) {
         ContactRequest contactRequest = contactRequestRepository.findByRequestId(contactRequestHandleDto.getRequestId()).orElseThrow(() -> new NotFoundException("Contact request not found."));
 
         if(!contactRequest.getRequestReceiver().getUsername().equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
             throw new UnauthorizedException("You don't have authority to access provided contact request.");
         }
 
-        if(contactRequestHandleDto.isAccepted()){
-            User sender = contactRequest.getRequestSender();
-            User receiver = contactRequest.getRequestReceiver();
+        User sender = contactRequest.getRequestSender();
+        User receiver = contactRequest.getRequestReceiver();
 
+        if(contactRequestHandleDto.isAccepted()){
             if(!sender.getContacts().contains(receiver)){
                 sender.getContacts().add(receiver);
                 userRepository.save(sender);
@@ -76,5 +80,11 @@ public class ContactRequestService {
         if(contactRequestRepository.existsById(contactRequestHandleDto.getRequestId())){
             contactRequestRepository.deleteByRequestId(contactRequestHandleDto.getRequestId());
         }
+
+        HashMap<String, UserDto> senderReceiverMap = new HashMap<>(2);
+        senderReceiverMap.put("sender", UserMapper.INSTANCE.userToUserDto(sender));
+        senderReceiverMap.put("receiver", UserMapper.INSTANCE.userToUserDto(receiver));
+
+        return senderReceiverMap;
     }
 }
