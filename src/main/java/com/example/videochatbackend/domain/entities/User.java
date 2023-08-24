@@ -36,6 +36,10 @@ public class User {
         return contacts.stream().anyMatch(c -> c.getUserId().equals(contactId));
     }
 
+    public boolean isInContacts(String username) {
+        return contacts.stream().anyMatch(c -> c.getUsername().equals(username));
+    }
+
     public Long getUserId() {
         return userId;
     }

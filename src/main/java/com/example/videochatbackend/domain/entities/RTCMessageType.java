@@ -4,5 +4,6 @@ public enum RTCMessageType {
     OFFER,
     CANDIDATE,
     ANSWER,
-    REJECT
+    REJECT,
+    HANG_UP
 }

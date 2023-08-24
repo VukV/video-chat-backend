@@ -1,10 +1,10 @@
 package com.example.videochatbackend.web.controllers;
 
+import com.example.videochatbackend.domain.dtos.rtc.RTCMessage;
 import com.example.videochatbackend.services.PusherService;
 import com.example.videochatbackend.services.UserService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class RTCController {
 
     private final PusherService pusherService;
-    private final UserService userService;
 
-    public RTCController(PusherService pusherService, UserService userService) {
+    public RTCController(PusherService pusherService) {
         this.pusherService = pusherService;
-        this.userService = userService;
+    }
+
+    @PostMapping("/message")
+    public ResponseEntity<?> sendMessage(@RequestBody RTCMessage message) {
+        pusherService.sendRtcMessage(message);
+        return ResponseEntity.ok().build();
     }
 }
