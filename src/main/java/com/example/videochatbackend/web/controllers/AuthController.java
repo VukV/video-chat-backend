@@ -60,9 +60,14 @@ public class AuthController {
     public ResponseEntity<?> pusherAuth(@RequestParam("socket_id") String socketId, @RequestParam("channel_name") String channelName, @RequestParam("userId") Integer userId, @RequestParam("username") String username){
         pusherService.validateConnection(username, channelName);
 
-        PresenceUser presenceUser = new PresenceUser(userId, Map.of("username", username));
-        String auth = pusher.authenticate(socketId, channelName, presenceUser);
-
-        return ResponseEntity.ok(auth);
+        if(channelName.contains("presence")) {
+            PresenceUser presenceUser = new PresenceUser(userId, Map.of("username", username));
+            String auth = pusher.authenticate(socketId, channelName, presenceUser);
+            return ResponseEntity.ok(auth);
+        }
+        else {
+            String auth = pusher.authenticate(socketId, channelName);
+            return ResponseEntity.ok(auth);
+        }
     }
 }

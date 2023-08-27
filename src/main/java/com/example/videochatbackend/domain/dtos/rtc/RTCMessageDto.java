@@ -2,17 +2,17 @@ package com.example.videochatbackend.domain.dtos.rtc;
 
 import com.example.videochatbackend.domain.entities.RTCMessageType;
 
-public class RTCMessage {
+public class RTCMessageDto {
 
     private RTCMessageType type;
     private String usernameFrom;
     private String usernameTo;
     private Object data;
 
-    public RTCMessage() {
+    public RTCMessageDto() {
     }
 
-    public RTCMessage(RTCMessageType type, String usernameFrom, String usernameTo, Object data) {
+    public RTCMessageDto(RTCMessageType type, String usernameFrom, String usernameTo, Object data) {
         this.type = type;
         this.usernameFrom = usernameFrom;
         this.usernameTo = usernameTo;
