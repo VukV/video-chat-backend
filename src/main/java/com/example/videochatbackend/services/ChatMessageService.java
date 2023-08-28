@@ -26,7 +26,7 @@ public class ChatMessageService {
         this.pusherService = pusherService;
     }
 
-    public void handleMessage(ChatMessageCreateDto messageCreateDto) {
+    public ChatMessage handleMessage(ChatMessageCreateDto messageCreateDto) {
         String usernameFrom = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User userFrom = userRepository.findByUsername(usernameFrom).orElseThrow(() -> new NotFoundException("User not found."));
@@ -38,6 +38,8 @@ public class ChatMessageService {
 
             chatMessageRepository.save(message);
             pusherService.sendChatMessage(message, userTo.getUserId());
+
+            return message;
         }
         else {
             throw new UnauthorizedException("Can't send message to " + messageCreateDto.getUsernameTo());

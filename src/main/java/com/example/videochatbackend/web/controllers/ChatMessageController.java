@@ -23,7 +23,6 @@ public class ChatMessageController {
 
     @PostMapping
     public ResponseEntity<?> sendMessage(@RequestBody ChatMessageCreateDto messageCreateDto) {
-        chatMessageService.handleMessage(messageCreateDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(chatMessageService.handleMessage(messageCreateDto));
     }
 }
