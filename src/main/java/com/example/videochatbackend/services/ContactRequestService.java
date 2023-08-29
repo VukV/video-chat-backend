@@ -5,8 +5,8 @@ import com.example.videochatbackend.domain.dtos.contactrequest.ContactRequestHan
 import com.example.videochatbackend.domain.dtos.user.UserDto;
 import com.example.videochatbackend.domain.entities.ContactRequest;
 import com.example.videochatbackend.domain.entities.User;
+import com.example.videochatbackend.domain.exceptions.ForbiddenException;
 import com.example.videochatbackend.domain.exceptions.NotFoundException;
-import com.example.videochatbackend.domain.exceptions.UnauthorizedException;
 import com.example.videochatbackend.domain.mappers.ContactRequestMapper;
 import com.example.videochatbackend.domain.mappers.UserMapper;
 import com.example.videochatbackend.repositories.ContactRequestRepository;
@@ -14,10 +14,8 @@ import com.example.videochatbackend.repositories.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -59,7 +57,7 @@ public class ContactRequestService {
         ContactRequest contactRequest = contactRequestRepository.findByRequestId(contactRequestHandleDto.getRequestId()).orElseThrow(() -> new NotFoundException("Contact request not found."));
 
         if(!contactRequest.getRequestReceiver().getUsername().equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
-            throw new UnauthorizedException("You don't have authority to access provided contact request.");
+            throw new ForbiddenException("You can't access provided contact request.");
         }
 
         User sender = contactRequest.getRequestSender();

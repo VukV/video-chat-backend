@@ -1,7 +1,5 @@
 package com.example.videochatbackend.domain.entities;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 

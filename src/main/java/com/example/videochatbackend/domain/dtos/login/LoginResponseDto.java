@@ -1,6 +1,5 @@
 package com.example.videochatbackend.domain.dtos.login;
 
-
 public class LoginResponseDto {
 
     private String jwt;

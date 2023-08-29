@@ -3,8 +3,8 @@ package com.example.videochatbackend.services;
 import com.example.videochatbackend.domain.dtos.chatmessages.ChatMessageCreateDto;
 import com.example.videochatbackend.domain.entities.ChatMessage;
 import com.example.videochatbackend.domain.entities.User;
+import com.example.videochatbackend.domain.exceptions.ForbiddenException;
 import com.example.videochatbackend.domain.exceptions.NotFoundException;
-import com.example.videochatbackend.domain.exceptions.UnauthorizedException;
 import com.example.videochatbackend.domain.mappers.ChatMessageMapper;
 import com.example.videochatbackend.repositories.ChatMessageRepository;
 import com.example.videochatbackend.repositories.UserRepository;
@@ -42,7 +42,7 @@ public class ChatMessageService {
             return message;
         }
         else {
-            throw new UnauthorizedException("Can't send message to " + messageCreateDto.getUsernameTo());
+            throw new ForbiddenException("Can't send message to " + messageCreateDto.getUsernameTo());
         }
     }
 

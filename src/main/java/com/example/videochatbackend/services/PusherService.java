@@ -5,6 +5,7 @@ import com.example.videochatbackend.domain.dtos.user.UserDto;
 import com.example.videochatbackend.domain.entities.ChatMessage;
 import com.example.videochatbackend.domain.entities.User;
 import com.example.videochatbackend.domain.exceptions.BadRequestException;
+import com.example.videochatbackend.domain.exceptions.ForbiddenException;
 import com.example.videochatbackend.domain.exceptions.NotFoundException;
 import com.example.videochatbackend.domain.exceptions.UnauthorizedException;
 import com.example.videochatbackend.repositories.UserRepository;
@@ -74,7 +75,7 @@ public class PusherService {
             }
         }
         else {
-            throw new UnauthorizedException("User is not in your contacts.");
+            throw new ForbiddenException("User is not in your contacts.");
         }
     }
 

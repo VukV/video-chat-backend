@@ -3,8 +3,6 @@ package com.example.videochatbackend.web.controllers;
 import com.example.videochatbackend.domain.dtos.login.BadCredentialsDto;
 import com.example.videochatbackend.domain.dtos.login.LoginRequestDto;
 import com.example.videochatbackend.domain.dtos.login.LoginResponseDto;
-import com.example.videochatbackend.domain.dtos.user.UserDto;
-import com.example.videochatbackend.domain.entities.User;
 import com.example.videochatbackend.security.jwt.JwtUtil;
 import com.example.videochatbackend.services.PusherService;
 import com.example.videochatbackend.services.UserService;
@@ -15,14 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin

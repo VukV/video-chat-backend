@@ -2,14 +2,12 @@ package com.example.videochatbackend.web.controllers;
 
 import com.example.videochatbackend.domain.dtos.contactrequest.ContactRequestHandleDto;
 import com.example.videochatbackend.domain.dtos.user.UserDto;
-import com.example.videochatbackend.domain.mappers.UserMapper;
 import com.example.videochatbackend.services.ContactRequestService;
 import com.example.videochatbackend.services.PusherService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 
 @RestController
