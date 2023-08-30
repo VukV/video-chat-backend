@@ -28,10 +28,11 @@ public class BootstrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        createDatabase();
+        //createDatabase();
         createUsers();
     }
 
+    //dev only
     private void createDatabase(){
         Connection connection = null;
         Statement statement = null;
