@@ -39,8 +39,10 @@ public class ContactRequestController {
     public ResponseEntity<?> handleRequest(@RequestBody ContactRequestHandleDto contactRequestHandleDto) {
         HashMap<String, UserDto> srMap = contactRequestService.handleContactRequest(contactRequestHandleDto);
 
-        pusherService.notifyAcceptedRequest(srMap.get("sender").getUserId(), srMap.get("receiver"));
-        pusherService.notifyAcceptedRequest(srMap.get("receiver").getUserId(), srMap.get("sender"));
+        if(contactRequestHandleDto.isAccepted()) {
+            pusherService.notifyAcceptedRequest(srMap.get("sender").getUserId(), srMap.get("receiver"));
+            pusherService.notifyAcceptedRequest(srMap.get("receiver").getUserId(), srMap.get("sender"));
+        }
 
         return ResponseEntity.ok().build();
     }
